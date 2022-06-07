@@ -50,7 +50,6 @@ class Dio_Helper {
       'Content-Type': 'application/json',
     };
 
-    return await dio.put( url, queryParameters: query, data: data);
+    return await dio.put(url, queryParameters: query, data: data);
   }
-
 }

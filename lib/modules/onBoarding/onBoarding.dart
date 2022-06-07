@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/modules/login/login.dart';
 import 'package:shop_app/shared/components/components.dart';
+import 'package:shop_app/shared/network/local/cash_helper.dart';
 import 'package:shop_app/shared/styles/colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -42,7 +43,11 @@ class _onBoardingState extends State<onBoarding> {
   ];
 
   void submit(){
-
+cash_helper.saveData(key: 'onboard', value: true).then((value) {
+  if(value){
+    navigateToAndFinish(context,Login_Screan() );
+  }
+});
   }
 
   @override
@@ -50,10 +55,7 @@ class _onBoardingState extends State<onBoarding> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          defultTextButtton(text: 'SKIP', function: (){
-            navigateToAndFinish(context,Login_Screan() );
-
-          })
+          defultTextButtton(text: 'SKIP', function: submit)
         ],
       ),
       body: Padding(
@@ -102,7 +104,7 @@ class _onBoardingState extends State<onBoarding> {
                 FloatingActionButton(
                   onPressed: () {
                     if(isLast){
-                      navigateToAndFinish(context,Login_Screan() );
+                      submit();
                     }else{
                       boardController.nextPage(
                           duration: Duration(milliseconds: 500),
