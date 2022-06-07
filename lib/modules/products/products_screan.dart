@@ -133,6 +133,7 @@ class Products_Screan extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           child: Container(
             color: Colors.white,
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -187,6 +188,14 @@ class Products_Screan extends StatelessWidget {
                                   decoration: TextDecoration.lineThrough),
                             ),
                           Spacer(),
+
+                          if( AppCubit.get(context).carts[model?.id]!)
+                          Icon(
+                                Icons.shopping_cart,
+                                size: 22,
+                                color: Colors.amber,
+                              ),
+SizedBox(width: 5,),
                           IconButton(
                               onPressed: () {
                                 AppCubit.get(context).ChangeFavourites(model?.id??0);
@@ -200,7 +209,7 @@ class Products_Screan extends StatelessWidget {
                                     Icons.favorite_border,
                                     size: 16,
                                     color: Colors.white,
-                                  )))
+                                  ))),
                         ],
                       ),
                     ],

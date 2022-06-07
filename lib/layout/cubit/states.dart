@@ -1,3 +1,4 @@
+import 'package:shop_app/models/ChangeCarts_Model.dart';
 import 'package:shop_app/models/ChangeFavourites_Model.dart';
 import 'package:shop_app/models/loginModel.dart';
 
@@ -19,6 +20,7 @@ class AppGetCategoriesErrorState extends AppStates{
   final String Error;
   AppGetCategoriesErrorState(this.Error);
 }
+
 class AppChangeFavouritesState extends AppStates{}
 
 class AppChangeFavouritesSuccsesState extends AppStates{
@@ -30,6 +32,17 @@ class AppChangeFavouritesErrorState extends AppStates{
   final String Error;
   AppChangeFavouritesErrorState(this.Error);
 }
+class AppChangeCartsState extends AppStates{}
+
+class AppChangeCartsSuccsesState extends AppStates{
+final ChangeCarts_Model? model;
+
+  AppChangeCartsSuccsesState(this.model);
+}
+class AppChangeCartsErrorState extends AppStates{
+  final String Error;
+  AppChangeCartsErrorState(this.Error);
+}
 
 
 class AppLodingGetFavoritesState extends AppStates{}
@@ -38,6 +51,14 @@ class AppGetFavoritesSuccsesState extends AppStates{}
 class AppGetFavoritesErrorState extends AppStates{
   final String Error;
   AppGetFavoritesErrorState(this.Error);
+}
+
+class AppLodingGetCartsState extends AppStates{}
+
+class AppGetCartsSuccsesState extends AppStates{}
+class AppGetCartsErrorState extends AppStates{
+  final String Error;
+  AppGetCartsErrorState(this.Error);
 }
 
 class AppLodingGetProfileState extends AppStates{}

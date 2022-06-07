@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/cubit/states.dart';
+import 'package:shop_app/models/ChangeCarts_Model.dart';
 import 'package:shop_app/models/ChangeFavourites_Model.dart';
+import 'package:shop_app/models/carts_model.dart';
 import 'package:shop_app/models/categories_model.dart';
 import 'package:shop_app/models/favorites_model.dart';
 import 'package:shop_app/models/home_model.dart';
@@ -34,6 +36,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   Map<int, bool> favorits = {};
+  Map<int, bool> carts = {};
 
   void getHomeData() {
     emit(AppLodingDataState());
@@ -43,6 +46,9 @@ class AppCubit extends Cubit<AppStates> {
 
       home_model?.data?.products.forEach((e) {
         favorits.addAll({e.id ?? 0: e.in_favorites});
+      });
+      home_model?.data?.products.forEach((e) {
+        carts.addAll({e.id ?? 0: e.inCart});
       });
       print(favorits.toString());
 
@@ -93,7 +99,35 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+
+  ChangeCarts_Model? changeCarts_Model;
+
+  void ChangeCarts(int productId) {
+    carts[productId] = !carts[productId]!;
+    emit(AppChangeCartsState());
+    Dio_Helper.postData(
+            url: CARTS, data: {'product_id': productId},
+        token: token
+    )
+        .then((value) {
+      changeCarts_Model =ChangeCarts_Model.fromJson(value.data);
+      print(value.data);
+      if(changeCarts_Model?.status==false){
+        carts[productId] = !carts[productId]!;
+
+      }else{
+        GetCarts();
+      }
+          emit(AppChangeCartsSuccsesState(changeCarts_Model));
+    })
+        .catchError((error) {
+      carts[productId] = !carts[productId]!;
+
+      emit(AppChangeCartsErrorState(error.toString()));
+    });
+  }
   FavoritesModel?  favoritesModel;
+
   void GetFavorites(){
     emit(AppLodingGetFavoritesState());
     Dio_Helper.getData(url: FAVORITES,token: token).then((value) {
@@ -102,6 +136,23 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppGetFavoritesSuccsesState());
     }).catchError((error){
       emit(AppGetFavoritesErrorState(error));
+    });
+
+
+  }
+
+
+
+  CartsModel?  cartsModel;
+
+  void GetCarts(){
+    emit(AppLodingGetCartsState());
+    Dio_Helper.getData(url: CARTS,token: token).then((value) {
+      cartsModel = CartsModel.fromJson(value.data);
+      print(cartsModel?.data?.cart_items[0].id);
+      emit(AppGetCartsSuccsesState());
+    }).catchError((error){
+      emit(AppGetCartsErrorState(error));
     });
 
 

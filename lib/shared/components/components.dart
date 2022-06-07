@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shop_app/layout/cubit/cubit.dart';
 import 'package:shop_app/modules/login/login.dart';
 import 'package:shop_app/shared/network/local/cash_helper.dart';
+import 'package:shop_app/shared/styles/colors.dart';
 
 
 void navigateTo(context, widget) => Navigator.push(
@@ -125,4 +127,97 @@ Widget myDivider()=> Padding(
     color: Colors.grey[400],
   ),
 );
+
+Widget BuildFavoritesItem( model,context,{bool isOldPrice =true})=>Padding(
+  padding: const EdgeInsets.all(20.0),
+  child: Container(
+    height: 120,
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+
+          child: Stack(
+            alignment: AlignmentDirectional.bottomStart,
+            children: [
+              Image(
+                image: NetworkImage('${model?.image}'),
+                width: 120,
+                height: 120,
+              ),
+              if (model?.discount != 0)
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 5, vertical: 2),
+                  color: Colors.red,
+                  child: Text(
+                    'DISCOUNT ${model?.discount} %',
+                    style: TextStyle(color: Colors.white, fontSize: 9),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        SizedBox(width: 20,),
+
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${model?.name}',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 14, height: 1.3),
+              ),
+              Row(
+                children: [
+                  Text(
+                    '${model?.price}',
+                    style: TextStyle(fontSize: 12, color: defColor),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  if (model?.discount != 0)
+                    Text(
+                      '${model?.oldPrice}',
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                          decoration: TextDecoration.lineThrough),
+                    ),
+                  Spacer(),
+                  if( AppCubit.get(context).carts[model?.id]!)
+                    Icon(
+                      Icons.shopping_cart,
+                      size: 22,
+                      color: Colors.amber,
+                    ),
+                  SizedBox(width: 5,),
+                  IconButton(
+                      onPressed: () {
+                        AppCubit.get(context).ChangeFavourites(model?.id??0);
+                        print(model?.id);
+
+                      },
+                      icon: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: AppCubit.get(context).favorits[model?.id]! ? defColor: Colors.grey,
+                          child: Icon(
+                            Icons.favorite_border,
+                            size: 16,
+                            color: Colors.white,
+                          ))),
+                ],
+              ),
+            ],
+          ),
+        )
+      ],
+    ),
+  ),
+);
+
 
