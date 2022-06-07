@@ -83,7 +83,7 @@ var phoneController = TextEditingController();
                       children: [
                         Text(' your Points : ${model?.data?.points}'),
                         Spacer(),
-                        Text(' your Credit : ${model?.data?.credit}'),
+                        Text(' your Carts : ${AppCubit.get(context).cartsModel?.data?.cart_items.length}'),
                       ],
                     ),
                     SizedBox(height: 30,),

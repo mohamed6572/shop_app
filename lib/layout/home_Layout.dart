@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/cubit/cubit.dart';
 import 'package:shop_app/layout/cubit/states.dart';
+import 'package:shop_app/modules/Carts/carts_Screan.dart';
 import 'package:shop_app/modules/login/login.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/network/local/cash_helper.dart';
@@ -17,6 +18,13 @@ class Home_Layout extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text('Salla'),
+            actions: [
+              IconButton(onPressed: (){} , icon: Icon(Icons.search)),
+              IconButton(onPressed: (){
+                navigateTo(context, Carts_Screan());
+              } , icon: Icon(Icons.shopping_cart)),
+SizedBox(width: 10,),
+            ],
           ),
           body: cubit.Screans[cubit.currentIndex],
           bottomNavigationBar: BottomNavigationBar(

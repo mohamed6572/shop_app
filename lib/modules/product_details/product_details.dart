@@ -138,9 +138,13 @@ class Product_Details extends StatelessWidget {
                     height: 20,
                   ),
                   defultButton(
-                      text: 'Add To Cart',
-                      function: () {},
-                      Background: defColor)
+                      text:  AppCubit.get(context).carts[model?.id]! ?  'Remove':'Add To Cart',
+
+                      function: () {
+                        AppCubit.get(context).ChangeCarts(model?.id??0);
+                      },
+                      Background:  AppCubit.get(context).carts[model?.id]! ?  Colors.grey:defColor,
+                  )
                 ],
               ),
             ),
