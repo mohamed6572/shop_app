@@ -146,7 +146,7 @@ Widget BuildFavoritesItem( model,context,{bool isOldPrice =true})=>Padding(
                 width: 120,
                 height: 120,
               ),
-              if (model?.discount != 0)
+              if (model?.discount != 0&& isOldPrice)
                 Container(
                   padding: EdgeInsets.symmetric(
                       horizontal: 5, vertical: 2),
@@ -180,7 +180,7 @@ Widget BuildFavoritesItem( model,context,{bool isOldPrice =true})=>Padding(
                   SizedBox(
                     width: 5,
                   ),
-                  if (model?.discount != 0)
+                  if (model?.discount != 0&& isOldPrice)
                     Text(
                       '${model?.oldPrice}',
                       style: TextStyle(
