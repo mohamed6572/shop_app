@@ -15,11 +15,11 @@ class Products_Screan extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {
-        if(state is AppChangeFavouritesSuccsesState){
-          if(state.model?.status==false){
-            ShowToast(text: state.model?.message??'', state: ToastState.ERROR);
+        if (state is AppChangeFavouritesSuccsesState) {
+          if (state.model?.status == false) {
+            ShowToast(
+                text: state.model?.message ?? '', state: ToastState.ERROR);
           }
-
         }
       },
       builder: (context, state) {
@@ -27,13 +27,15 @@ class Products_Screan extends StatelessWidget {
         return BuildCondition(
           condition: cubit.home_model != null && cubit.categories_model != null,
           fallback: (context) => Center(child: CircularProgressIndicator()),
-          builder: (context) => productsBuilder(cubit.home_model, context, cubit.categories_model),
+          builder: (context) => productsBuilder(
+              cubit.home_model, context, cubit.categories_model),
         );
       },
     );
   }
 
-  Widget productsBuilder(Home_model? model, context,Categories_Model? categories_model) =>
+  Widget productsBuilder(
+          Home_model? model, context, Categories_Model? categories_model) =>
       SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -41,15 +43,14 @@ class Products_Screan extends StatelessWidget {
           children: [
             CarouselSlider(
                 items: model?.data?.banners
-                    .map((e) =>
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image(
-                        image: NetworkImage('${e.image}'),
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      ),
-                    ))
+                    .map((e) => ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image(
+                            image: NetworkImage('${e.image}'),
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
+                        ))
                     .toList(),
                 options: CarouselOptions(
                   height: 230,
@@ -67,7 +68,6 @@ class Products_Screan extends StatelessWidget {
               height: 10,
             ),
             myDivider(),
-
             Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: Text(
@@ -85,10 +85,12 @@ class Products_Screan extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemBuilder:(context, index) => BuildCategorieItm(categories_model?.data?.data[index]),
-                  separatorBuilder: (context ,index)=> SizedBox(width: 10,),
-                  itemCount: categories_model?.data?.data.length??0
-              ),
+                  itemBuilder: (context, index) =>
+                      BuildCategorieItm(categories_model?.data?.data[index]),
+                  separatorBuilder: (context, index) => SizedBox(
+                        width: 10,
+                      ),
+                  itemCount: categories_model?.data?.data.length ?? 0),
             ),
             SizedBox(
               height: 5,
@@ -114,26 +116,28 @@ class Products_Screan extends StatelessWidget {
                 mainAxisSpacing: 2,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                children: List.generate(model?.data?.products.length ?? 0,
-                        (index) =>
-                        BuildGriedProduct(
-                            model?.data?.products[index], context)),
+                children: List.generate(
+                    model?.data?.products.length ?? 0,
+                    (index) => BuildGriedProduct(
+                        model?.data?.products[index], context)),
               ),
             )
           ],
         ),
       );
 
-  Widget BuildGriedProduct(productModel? model, context) =>
-      InkWell(
+  Widget BuildGriedProduct(productModel? model, context) => InkWell(
         onTap: () {
-          navigateTo(context, Product_Details(model: model,));
+          navigateTo(
+              context,
+              Product_Details(
+                model: model,
+              ));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Container(
             color: Colors.white,
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -148,8 +152,8 @@ class Products_Screan extends StatelessWidget {
                       ),
                       if (model?.discount != 0)
                         Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 2),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                           color: Colors.red,
                           child: Text(
                             'DISCOUNT ${model?.discount}%',
@@ -188,23 +192,27 @@ class Products_Screan extends StatelessWidget {
                                   decoration: TextDecoration.lineThrough),
                             ),
                           Spacer(),
-
-                          if( AppCubit.get(context).carts[model?.id]!)
-                          Icon(
-                                Icons.shopping_cart,
-                                size: 22,
-                                color: Colors.amber,
-                              ),
-SizedBox(width: 5,),
+                          if (AppCubit.get(context).carts[model?.id]!)
+                            Icon(
+                              Icons.shopping_cart,
+                              size: 22,
+                              color: Colors.amber,
+                            ),
+                          SizedBox(
+                            width: 5,
+                          ),
                           IconButton(
                               onPressed: () {
-                                AppCubit.get(context).ChangeFavourites(model?.id??0);
+                                AppCubit.get(context)
+                                    .ChangeFavourites(model?.id ?? 0);
                                 print(model?.id);
-
                               },
                               icon: CircleAvatar(
                                   radius: 15,
-                                  backgroundColor: AppCubit.get(context).favorits[model?.id]! ? defColor: Colors.grey,
+                                  backgroundColor:
+                                      AppCubit.get(context).favorits[model?.id]!
+                                          ? defColor
+                                          : Colors.grey,
                                   child: Icon(
                                     Icons.favorite_border,
                                     size: 16,
@@ -221,8 +229,7 @@ SizedBox(width: 5,),
         ),
       );
 
-  Widget BuildCategorieItm(DataModel? model) =>
-      ClipRRect(
+  Widget BuildCategorieItm(DataModel? model) => ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Container(
           width: 150,
@@ -230,25 +237,23 @@ SizedBox(width: 5,),
           child: Stack(
             alignment: AlignmentDirectional.bottomCenter,
             children: [
-              Image(image: NetworkImage(
-                  '${model?.image}'),
+              Image(
+                image: NetworkImage('${model?.image}'),
                 width: 150,
                 height: 120,
-                fit: BoxFit.cover,),
+                fit: BoxFit.cover,
+              ),
               Container(
                 width: double.infinity,
                 color: Colors.black.withOpacity(0.7),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 3.0),
-                  child: Text('${model?.name}',
+                  child: Text(
+                    '${model?.name}',
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14
-
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ),
               ),
